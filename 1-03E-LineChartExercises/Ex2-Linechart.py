@@ -5,27 +5,26 @@
 ######
 
 # Perform imports here:
-
+import pandas as pd
+import plotly.offline as plt
+import plotly.graph_objs as go
 
 
 
 # Create a pandas DataFrame from 2010YumaAZ.csv
-df = pd.read_csv('../data/2010YumaAZ.csv')
-days = ['TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY','MONDAY']
-
+df = pd.read_csv('../Data/2010YumaAZ.csv')
 
 # Use a for loop (or list comprehension to create traces for the data list)
-data = []
+data = [go.Scatter(
+        x=df['LST_TIME'],
+        y=df[df['DAY'] == weekday]['T_HR_AVG'],
+        name=weekday,
+        mode='lines+markers') for weekday in df['DAY'].unique()]
 
-for day in days:
-    # What should go inside this Scatter call?
-    trace = go.Scatter()
-    data.append(trace)
 
 # Define the layout
-
-
-
-
+layout = go.Layout(title='Temperatures', hovermode='closest')
 
 # Create a fig from data and layout, and plot the fig
+fig = go.Figure(data, layout)
+plt.plot(fig)
